@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="UFT-8" />
+    <title>BabylonJS Demo</title>
+    <script src="http://cdn.babylonjs.com/2-4/babylon.max.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", function() {
+        // To get the canvas DOM element.
+        var canvas = document.getElementById("canvas");
+        // Load the 3D engine.
+        var engine = new BABYLON.Engine(canvas, true);
+
+        // This function creates and returns the scene
+        var createScene = function() {
+          // scene object is like a breakdown, e.g. a world, level, screen.
+          var scene = new BABYLON.Scene(engine);
+          // clearColor will be used each time it's redrawn. (everytime the
+          // screen refreshes it will draw the background in white.
+          scene.clearColor = new BABYLON.Color3.White();
+          // We need at least one camera, it's like an eye in a 3D world to
+          // view the result.
+          var camera = new BABYLON.FreeCamera(
+            "camera1",
+            // Set x, y, z (-10 means we are back 10 units from the object
+            // to see what we draw).
+            new BABYLON.Vector3(0, 0, -10),
+            scene
+          );
+          // .Zero() is a reference to a Vector3 with three zeros (0, 0, 0)
+          camera.setTarget(BABYLON.Vector3.Zero());
+
+          var box = BABYLON.Mesh.CreateBox("Box", 4.0, scene);
+
+          return scene;
+        };
+
+        var scene = createScene();
+
+        engine.runRenderLoop(function() {
+          scene.render();
+        });
+      });
+    </script>
+  </body>
+</html>
