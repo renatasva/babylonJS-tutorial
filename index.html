@@ -2,7 +2,7 @@
   <head>
     <meta charset="UFT-8" />
     <title>BabylonJS Demo</title>
-    <script src="http://cdn.babylonjs.com/2-4/babylon.max.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.max.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
 
@@ -29,7 +29,7 @@
             "camera1",
             // Set x, y, z (-10 means we are back 10 units from the object
             // to see what we draw).
-            new BABYLON.Vector3(0, 0, -10),
+            new BABYLON.Vector3(0, 4, -10),
             scene
           );
           // .Zero() is a reference to a Vector3 with three zeros (0, 0, 0)
@@ -40,8 +40,10 @@
           return scene;
         };
 
+        // Call createScene function.
         var scene = createScene();
-
+        // renderLoop will be called every frame, by default it's 60 frames
+        // per second. This is the main game/action loop.
         engine.runRenderLoop(function() {
           scene.render();
         });
