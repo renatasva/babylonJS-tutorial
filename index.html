@@ -24,7 +24,7 @@
           // screen refreshes it will draw the background in white.
           scene.clearColor = new BABYLON.Color3.White();
           // --------------
-          // BASIC CAMERA TYPE:
+          // CAMERA TYPE - FreeCamera:
           // // We need at least one camera, it's like an eye in a 3D world to
           // // view the result.
           // var camera = new BABYLON.FreeCamera(
@@ -46,22 +46,46 @@
           // camera.keysRight.push(70);
           // --------------
 
-          // USING OTHER CAMERA TYPE:
-          // move box variable to the top
-          var box = BABYLON.Mesh.CreateBox("Box", 4.0, scene);
+          // CAMERA TYPE - ArcRotateCamera:
+          // // move box variable to the top
+          // var box = BABYLON.Mesh.CreateBox("Box", 4.0, scene);
 
-          // Useful when you want to orbit around something, float free.
-          // Takes two parameters: alfa(rotation around x axis in radians) and beta(rotation around y axis in radians)
-          // Fourth parameter is radian - distance from the object. And then - target (box.position) and last - scene.
-          var camera = new BABYLON.ArcRotateCamera(
-            "arcCamera",
-            BABYLON.Tools.ToRadians(45),
-            BABYLON.Tools.ToRadians(60),
-            10.0,
-            box.position,
+          // // Useful when you want to orbit around something, float free.
+          // // Takes two parameters: alfa(rotation around x axis in radians) and beta(rotation around y axis in radians)
+          // // Fourth parameter is radian - distance from the object. And then - target (box.position) and last - scene.
+          // var camera = new BABYLON.ArcRotateCamera(
+          //   "arcCamera",
+          //   BABYLON.Tools.ToRadians(45),
+          //   BABYLON.Tools.ToRadians(60),
+          //   10.0,
+          //   box.position,
+          //   scene
+          // );
+          // // Here we don't need to set target or bind keys, only attach control;
+          // camera.attachControl(canvas, true);
+          // --------------
+
+          // CAMERA TYPE - FollowCamera:
+
+          var box = BABYLON.Mesh.CreateBox("Box", 4.0, scene);
+          var box2 = BABYLON.Mesh.CreateBox("Box2", 4.0, scene);
+
+          var material = new BABYLON.StandardMaterial("material1", scene);
+          material.wireframe = true;
+          box2.material = material;
+
+          box2.position = new BABYLON.Vector3(0, 3, 0);
+
+          // This camera used when you want to follow a specific target (e.g. in 3rd shooter games).
+          var camera = new BABYLON.FollowCamera(
+            "followCam",
+            BABYLON.Vector3.Zero(),
             scene
           );
-          // here we don't need to set target or bind keys., only attach control;
+          // Select a target which will be locked and followed.
+          camera.lockedTarget = box;
+          camera.radius = 50;
+          camera.heightOffset = 50;
           camera.attachControl(canvas, true);
 
           return scene;
@@ -72,6 +96,11 @@
         // renderLoop will be called every frame, by default it's 60 frames
         // per second. This is the main game/action loop.
         engine.runRenderLoop(function() {
+          // As we give every object a name we can reference it by it.
+          // Here we reference box and for every loop we set a new z position for it, to move it on z axis.
+          // Using it together with FollowCamera.
+          scene.getMeshByName("Box").position.z -= 0.01;
+
           scene.render();
         });
       });
