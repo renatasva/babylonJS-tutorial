@@ -23,19 +23,46 @@
           // clearColor will be used each time it's redrawn. (everytime the
           // screen refreshes it will draw the background in white.
           scene.clearColor = new BABYLON.Color3.White();
-          // We need at least one camera, it's like an eye in a 3D world to
-          // view the result.
-          var camera = new BABYLON.FreeCamera(
-            "camera1",
-            // Set x, y, z (-10 means we are back 10 units from the object
-            // to see what we draw).
-            new BABYLON.Vector3(0, 4, -10),
+          // --------------
+          // BASIC CAMERA TYPE:
+          // // We need at least one camera, it's like an eye in a 3D world to
+          // // view the result.
+          // var camera = new BABYLON.FreeCamera(
+          //   "camera1",
+          //   // Set x, y, z (-10 means we are back 10 units from the object
+          //   // to see what we draw).
+          //   new BABYLON.Vector3(0, 4, -10),
+          //   scene
+          // );
+
+          // // .Zero() is a reference to a Vector3 with three zeros (0, 0, 0)
+          // camera.setTarget(BABYLON.Vector3.Zero());
+          // // Add control to the camera and be able to move with arrow buttons or mouse.
+          // camera.attachControl(canvas, true);
+
+          // camera.keysUp.push(80);
+          // camera.keysDown.push(80);
+          // camera.keysLeft.push(70);
+          // camera.keysRight.push(70);
+          // --------------
+
+          // USING OTHER CAMERA TYPE:
+          // move box variable to the top
+          var box = BABYLON.Mesh.CreateBox("Box", 4.0, scene);
+
+          // Useful when you want to orbit around something, float free.
+          // Takes two parameters: alfa(rotation around x axis in radians) and beta(rotation around y axis in radians)
+          // Fourth parameter is radian - distance from the object. And then - target (box.position) and last - scene.
+          var camera = new BABYLON.ArcRotateCamera(
+            "arcCamera",
+            BABYLON.Tools.ToRadians(45),
+            BABYLON.Tools.ToRadians(60),
+            10.0,
+            box.position,
             scene
           );
-          // .Zero() is a reference to a Vector3 with three zeros (0, 0, 0)
-          camera.setTarget(BABYLON.Vector3.Zero());
-
-          var box = BABYLON.Mesh.CreateBox("Box", 4.0, scene);
+          // here we don't need to set target or bind keys., only attach control;
+          camera.attachControl(canvas, true);
 
           return scene;
         };
